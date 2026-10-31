@@ -439,7 +439,7 @@
         else if (j === selected) c.classList.add('wrong');
       });
       elFeedback.className = 'feedback ' + (ok ? 'ok' : 'bad');
-      elTitle.textContent = ok ? 'Saktë! すごい!' : 'Jo tamam.';
+      elTitle.textContent = ok ? 'Saktë! すごい!' : 'Nuk është saktë.';
       elBody.textContent = q.why;
       elAction.textContent = index === QUESTIONS.length - 1 ? 'Përfundo' : 'Vazhdo';
       setProgress(index + 1);
