@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ura — mëso japonisht në shqip</title>
+  <title>Shqiponisht — mëso japonisht në shqip</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --stage: #f1ebe1;
+      --stage: #f7f1e5;
       --paper: #fffdf8;
       --paper-2: #f7f1e6;
       --ink: #1c1917;
       --muted: #77706a;
       --line: #e8e0d3;
-      --accent: #d62839;
+      --accent: #e41e20;
       --accent-soft: #fde4e4;
       --ok: #2f8f5b;
       --ok-soft: #dcf2e4;
@@ -23,6 +23,7 @@
       --serif-jp: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
       --sans-jp: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
       --sans: 'Inter', -apple-system, system-ui, sans-serif;
+      --brand: 'Poppins', 'Inter', system-ui, sans-serif;
       --mono: 'IBM Plex Mono', ui-monospace, monospace;
       --ease: cubic-bezier(0.23, 1, 0.32, 1);
     }
@@ -31,7 +32,7 @@
       margin: 0;
       min-height: 100vh;
       background:
-        radial-gradient(ellipse 70% 45% at 50% -8%, rgba(214,40,57,0.14), transparent 70%),
+        radial-gradient(ellipse 70% 45% at 50% -8%, rgba(228,30,32,0.14), transparent 70%),
         radial-gradient(ellipse 60% 40% at 50% 110%, rgba(28,25,23,0.06), transparent 70%),
         var(--stage);
       color: var(--ink);
@@ -48,9 +49,9 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
     }
-    .wordmark { display: flex; align-items: baseline; gap: 8px; letter-spacing: 0; text-transform: none; color: var(--ink); }
-    .wordmark b { font: 700 24px/1 var(--sans); letter-spacing: -0.02em; }
-    .wordmark span { font: 700 18px/1 var(--serif-jp); color: var(--accent); }
+    .wordmark { display: flex; align-items: center; gap: 10px; letter-spacing: 0; text-transform: none; color: var(--ink); }
+    .wordmark img { height: 30px; width: auto; display: block; }
+    .wordmark b { font: 700 20px/1 var(--brand); letter-spacing: 0.04em; }
 
     .phones { display: flex; gap: 64px 28px; justify-content: center; padding: 8px 32px 64px; flex-wrap: wrap; }
     .phone {
@@ -84,10 +85,12 @@
     .eyebrow { align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; font: 10.5px/1 var(--mono); letter-spacing: 0.16em; text-transform: uppercase; padding: 7px 10px; border: 1px solid rgba(251,246,236,0.22); border-radius: 999px; color: rgba(251,246,236,0.7); }
     .eyebrow i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
     .hero-glyph { margin: 26px 0 6px; display: flex; align-items: flex-end; gap: 14px; }
-    .hero-glyph .sun { width: 108px; height: 108px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; font: 900 64px/1 var(--serif-jp); color: #fbf6ec; box-shadow: 0 0 0 10px rgba(214,40,57,0.18); }
+    .hero-glyph .logo { width: 132px; height: 112px; border-radius: 24px; background: #f7f1e5; display: grid; place-items: center; padding: 12px; box-shadow: 0 0 0 8px rgba(228,30,32,0.18); }
+    .hero-glyph .logo img { width: 100%; height: auto; display: block; }
+    .brand-name { font: 700 13px/1 var(--brand); letter-spacing: 0.14em; color: #fbf6ec; margin-top: 18px; }
     .hero-glyph .read { font: 12px/1.4 var(--mono); color: rgba(251,246,236,0.6); padding-bottom: 6px; }
     .hero-glyph .read b { display: block; color: #fbf6ec; font: 600 15px/1.3 var(--sans); }
-    .cover h1 { font: 700 40px/1.05 var(--sans); letter-spacing: -0.03em; margin: 22px 0 12px; }
+    .cover h1 { font: 700 38px/1.05 var(--sans); letter-spacing: -0.03em; margin: 12px 0 12px; }
     .cover h1 em { font-style: normal; color: #ff7a85; }
     .cover p { margin: 0; color: rgba(251,246,236,0.72); font-size: 14.5px; max-width: 30ch; }
     .cover .spacer { flex: 1; }
@@ -119,7 +122,7 @@
     .unit .node { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; font: 700 17px/1 var(--serif-jp); background: var(--paper); border: 2px solid var(--line); color: var(--muted); z-index: 1; }
     .unit.done .node { background: var(--ok); border-color: var(--ok); color: #fff; }
     .unit.current { background: var(--accent-soft); }
-    .unit.current .node { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 0 5px rgba(214,40,57,0.18); }
+    .unit.current .node { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 0 5px rgba(228,30,32,0.18); }
     .unit .t { flex: 1; min-width: 0; }
     .unit .t b { display: block; font: 600 14px/1.25 var(--sans); }
     .unit .t span { font-size: 12px; color: var(--muted); }
@@ -172,7 +175,7 @@
     .seg button { border: 0; background: none; padding: 6px 10px; border-radius: 999px; font: 500 12px/1 var(--sans-jp); color: var(--muted); }
     .seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
     .card { margin: 14px 0 12px; border-radius: 22px; padding: 16px; background: var(--ink); color: #fbf6ec; display: grid; grid-template-columns: 96px 1fr; gap: 14px; position: relative; overflow: hidden; }
-    .card::after { content: ''; position: absolute; right: -40px; top: -40px; width: 130px; height: 130px; border-radius: 50%; background: rgba(214,40,57,0.25); }
+    .card::after { content: ''; position: absolute; right: -40px; top: -40px; width: 130px; height: 130px; border-radius: 50%; background: rgba(228,30,32,0.25); }
     .card .big { font: 700 76px/96px var(--serif-jp); text-align: center; background: rgba(251,246,236,0.06); border-radius: 16px; height: 96px; }
     .card .info { position: relative; z-index: 1; min-width: 0; }
     .card .rd { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
@@ -199,7 +202,7 @@
 <body>
   <header class="stage-bar" data-od-id="stage-bar">
     <span>Hi-fi prototype · iPhone · 4 ekrane</span>
-    <span class="wordmark"><b>Ura</b><span>橋</span></span>
+    <span class="wordmark"><img src="assets/shqiponisht-mark.png" alt="" /><b>SHQIPONISHT</b></span>
   </header>
 
   <main class="phones" data-od-id="stage">
@@ -214,9 +217,10 @@
         <div class="content" data-od-id="cover-body">
           <span class="eyebrow"><i></i>Për shqipfolës</span>
           <div class="hero-glyph" data-od-id="cover-hero">
-            <div class="sun" aria-hidden="true">橋</div>
-            <div class="read">hashi<b>„urë“</b></div>
+            <div class="logo"><img src="assets/shqiponisht-mark.png" alt="Logo e Shqiponisht: portë torii mbi hartën e Kosovës" /></div>
+            <div class="read">日本語 · nihongo<b>„japonisht“</b></div>
           </div>
+          <div class="brand-name">SHQIPONISHT</div>
           <h1>Japonishtja, e shpjeguar <em>në shqip.</em></h1>
           <p>Hiragana, katakana dhe fjalët e para — me shqiptim të shkruar ashtu si e lexon ti.</p>
           <div class="spacer"></div>
@@ -250,7 +254,7 @@
           <div class="goal" data-od-id="today-goal">
             <svg class="ring" viewBox="0 0 58 58" aria-hidden="true">
               <circle cx="29" cy="29" r="24" fill="none" stroke="#ece5d8" stroke-width="7"/>
-              <circle cx="29" cy="29" r="24" fill="none" stroke="#d62839" stroke-width="7" stroke-linecap="round" stroke-dasharray="113 151" transform="rotate(-90 29 29)"/>
+              <circle cx="29" cy="29" r="24" fill="none" stroke="#e41e20" stroke-width="7" stroke-linecap="round" stroke-dasharray="113 151" transform="rotate(-90 29 29)"/>
               <text x="29" y="33" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#1c1917">75%</text>
             </svg>
             <div>

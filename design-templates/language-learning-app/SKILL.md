@@ -65,6 +65,9 @@ target language appears as study material.
    where the native spelling differs from Hepburn romaji.
 5. **Stage** — full-bleed warm page with a soft spotlight. A caption row
    above the phones: "HI-FI PROTOTYPE · IPHONE" left, brand wordmark right.
+   When the brief supplies a logo, use it in the wordmark and the cover
+   hero, and derive the accent / paper colors from it (the baked example,
+   Shqiponisht, ships its torii mark as `assets/shqiponisht-mark.png`).
 6. **Phones** — four 360×760 frames in a row (wrapping on narrow
    viewports): 12px black bezel, ~56px outer radius, dynamic-island notch,
    status bar, bottom tab bar with 4 tabs (Today, Script, Vocabulary,
