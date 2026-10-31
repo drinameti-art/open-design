@@ -58,6 +58,8 @@ target language appears as study material.
 3. **Pick fonts that cover both scripts.** For Japanese targets use a JP
    face (e.g. Noto Serif JP / Noto Sans JP) for kana and kanji; confirm the
    Latin face carries the native language's diacritics (ë, ç, ş, ő, …).
+   Headlines use the DESIGN.md display face (or the brand's logo face);
+   never Inter / Roboto / system sans as the display face.
 4. **Find the bridge.** The signature feature is a pronunciation hint that
    respells target-language sounds in the native orthography. For
    Albanian → Japanese: `chi → çi`, `tsu → cu`, `ji → xhi`, `ya/yo → ja/jo`,
@@ -95,7 +97,7 @@ target language appears as study material.
     - `data-od-id` on the stage, each phone, and each phone's regions.
     - Interactive states use `aria-pressed` / `aria-live` so feedback is
       announced; buttons are real `<button>` elements.
-12. **Self-check**:
+12. **Self-check** against `references/checklist.md` (P0 must all pass):
     - Four frames, four different purposes — not copies of one screen.
     - Every UI string is in the native language; every target-language
       item is accurate (script, reading, meaning).
