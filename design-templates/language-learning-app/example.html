@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="sq">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ura — mëso japonisht në shqip</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --stage: #f1ebe1;
+      --paper: #fffdf8;
+      --paper-2: #f7f1e6;
+      --ink: #1c1917;
+      --muted: #77706a;
+      --line: #e8e0d3;
+      --accent: #d62839;
+      --accent-soft: #fde4e4;
+      --ok: #2f8f5b;
+      --ok-soft: #dcf2e4;
+      --gold: #e2a72e;
+      --serif-jp: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+      --sans-jp: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+      --sans: 'Inter', -apple-system, system-ui, sans-serif;
+      --mono: 'IBM Plex Mono', ui-monospace, monospace;
+      --ease: cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 70% 45% at 50% -8%, rgba(214,40,57,0.14), transparent 70%),
+        radial-gradient(ellipse 60% 40% at 50% 110%, rgba(28,25,23,0.06), transparent 70%),
+        var(--stage);
+      color: var(--ink);
+      font: 14px/1.5 var(--sans);
+    }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .stage-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 24px 36px;
+      font: 11px/1 var(--mono);
+      color: rgba(28,25,23,0.55);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .wordmark { display: flex; align-items: baseline; gap: 8px; letter-spacing: 0; text-transform: none; color: var(--ink); }
+    .wordmark b { font: 700 24px/1 var(--sans); letter-spacing: -0.02em; }
+    .wordmark span { font: 700 18px/1 var(--serif-jp); color: var(--accent); }
+
+    .phones { display: flex; gap: 64px 28px; justify-content: center; padding: 8px 32px 64px; flex-wrap: wrap; }
+    .phone {
+      width: 360px; height: 760px; flex-shrink: 0; position: relative;
+      background: #0b0a09; border-radius: 56px; padding: 12px;
+      box-shadow: 0 30px 60px rgba(28,25,23,0.22), inset 0 0 0 2px rgba(255,255,255,0.05);
+    }
+    .phone::before {
+      content: ''; position: absolute; top: 22px; left: 50%; transform: translateX(-50%);
+      width: 112px; height: 30px; background: #0b0a09; border-radius: 999px; z-index: 5;
+    }
+    .phone-label {
+      position: absolute; bottom: -30px; left: 0; right: 0; text-align: center;
+      font: 10.5px/1 var(--mono); letter-spacing: 0.18em; text-transform: uppercase; color: rgba(28,25,23,0.5);
+    }
+    .screen { width: 100%; height: 100%; background: var(--paper); border-radius: 44px; overflow: hidden; display: flex; flex-direction: column; }
+    .status { display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 8px; font: 600 14px/1 var(--sans); flex-shrink: 0; }
+    .status .right { display: flex; gap: 6px; align-items: center; }
+    .content { flex: 1; min-height: 0; overflow: hidden; padding: 8px 22px 0; display: flex; flex-direction: column; }
+
+    /* Tab bar */
+    .tabs { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); padding: 10px 10px 22px; background: var(--paper); flex-shrink: 0; }
+    .tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font: 500 10.5px/1 var(--sans); color: var(--muted); background: none; border: 0; padding: 4px 0; }
+    .tab svg { width: 22px; height: 22px; }
+    .tab[aria-current="page"] { color: var(--accent); }
+
+    /* Phone 1 — cover */
+    .cover { background: var(--ink); color: #fbf6ec; }
+    .cover .status { color: #fbf6ec; }
+    .cover .content { padding: 28px 28px 30px; position: relative; }
+    .eyebrow { align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; font: 10.5px/1 var(--mono); letter-spacing: 0.16em; text-transform: uppercase; padding: 7px 10px; border: 1px solid rgba(251,246,236,0.22); border-radius: 999px; color: rgba(251,246,236,0.7); }
+    .eyebrow i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .hero-glyph { margin: 26px 0 6px; display: flex; align-items: flex-end; gap: 14px; }
+    .hero-glyph .sun { width: 108px; height: 108px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; font: 900 64px/1 var(--serif-jp); color: #fbf6ec; box-shadow: 0 0 0 10px rgba(214,40,57,0.18); }
+    .hero-glyph .read { font: 12px/1.4 var(--mono); color: rgba(251,246,236,0.6); padding-bottom: 6px; }
+    .hero-glyph .read b { display: block; color: #fbf6ec; font: 600 15px/1.3 var(--sans); }
+    .cover h1 { font: 700 40px/1.05 var(--sans); letter-spacing: -0.03em; margin: 22px 0 12px; }
+    .cover h1 em { font-style: normal; color: #ff7a85; }
+    .cover p { margin: 0; color: rgba(251,246,236,0.72); font-size: 14.5px; max-width: 30ch; }
+    .cover .spacer { flex: 1; }
+    .bridge { display: flex; align-items: center; gap: 6px; margin-bottom: 20px; font: 12px/1.3 var(--mono); color: rgba(251,246,236,0.65); }
+    .bridge .pair { display: flex; gap: 5px; align-items: center; white-space: nowrap; font-size: 11px; padding: 8px 8px; border-radius: 12px; background: rgba(251,246,236,0.07); }
+    .bridge .pair b { font: 600 13px/1 var(--sans); color: #fbf6ec; }
+    .btn { display: block; width: 100%; border: 0; border-radius: 16px; padding: 16px; font: 600 15.5px/1 var(--sans); text-align: center; transition: transform 160ms var(--ease), background-color 200ms var(--ease), opacity 200ms var(--ease); }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 0 #9e1626; }
+    .btn-ghost { background: transparent; color: rgba(251,246,236,0.8); margin-top: 8px; }
+    .btn[disabled] { opacity: 0.4; cursor: default; box-shadow: none; }
+
+    /* Phone 2 — today */
+    .greet { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+    .greet h2 { font: 700 23px/1.15 var(--sans); letter-spacing: -0.02em; margin: 0; }
+    .greet small { display: block; font: 12px/1 var(--mono); color: var(--muted); margin-bottom: 6px; letter-spacing: 0.04em; }
+    .streak { display: flex; align-items: center; gap: 5px; padding: 8px 11px; border-radius: 999px; background: #fff3dd; color: #b9770e; font: 700 14px/1 var(--sans); }
+    .goal { margin: 16px 0 14px; display: flex; gap: 14px; align-items: center; padding: 14px; border-radius: 20px; background: var(--paper-2); border: 1px solid var(--line); }
+    .ring { width: 58px; height: 58px; flex-shrink: 0; }
+    .goal b { display: block; font: 600 15px/1.2 var(--sans); }
+    .goal span { font-size: 12.5px; color: var(--muted); }
+    .week { display: flex; gap: 5px; margin-top: 8px; }
+    .week i { width: 22px; height: 22px; border-radius: 7px; display: grid; place-items: center; font: 500 9.5px/1 var(--mono); font-style: normal; background: #ece5d8; color: var(--muted); }
+    .week i.on { background: var(--gold); color: #fff; }
+    .section-h { font: 10.5px/1 var(--mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin: 4px 0 10px; }
+    .path { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; position: relative; }
+    .path::before { content: ''; position: absolute; left: 25px; top: 20px; bottom: 20px; width: 2px; background: repeating-linear-gradient(var(--line) 0 6px, transparent 6px 11px); }
+    .unit { position: relative; display: flex; align-items: center; gap: 12px; padding: 8px 10px 8px 6px; border-radius: 16px; }
+    .unit .node { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; font: 700 17px/1 var(--serif-jp); background: var(--paper); border: 2px solid var(--line); color: var(--muted); z-index: 1; }
+    .unit.done .node { background: var(--ok); border-color: var(--ok); color: #fff; }
+    .unit.current { background: var(--accent-soft); }
+    .unit.current .node { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 0 5px rgba(214,40,57,0.18); }
+    .unit .t { flex: 1; min-width: 0; }
+    .unit .t b { display: block; font: 600 14px/1.25 var(--sans); }
+    .unit .t span { font-size: 12px; color: var(--muted); }
+    .unit.locked { opacity: 0.55; }
+    .unit .go { border: 0; background: var(--accent); color: #fff; font: 600 12.5px/1 var(--sans); padding: 9px 12px; border-radius: 999px; }
+
+    /* Phone 3 — quiz */
+    .quiz-top { display: flex; align-items: center; gap: 12px; margin-top: 4px; }
+    .x { width: 32px; height: 32px; border-radius: 50%; border: 0; background: var(--paper-2); display: grid; place-items: center; color: var(--muted); }
+    .bar { flex: 1; height: 10px; background: #ece5d8; border-radius: 999px; overflow: hidden; }
+    .bar i { display: block; height: 100%; width: 0; background: var(--ok); border-radius: inherit; transition: width 400ms var(--ease); }
+    .hearts { font: 600 13px/1 var(--sans); color: var(--accent); display: flex; align-items: center; gap: 4px; }
+    .q-count { font: 11px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 18px 0 8px; }
+    .q-prompt { font: 700 21px/1.25 var(--sans); letter-spacing: -0.015em; margin: 0 0 16px; min-height: 52px; }
+    .q-prompt .hl { color: var(--accent); }
+    .q-prompt .jp { font-family: var(--serif-jp); color: var(--accent); }
+    .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .opt { text-align: left; background: var(--paper); border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 16px; padding: 12px; min-height: 92px; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 200ms var(--ease), background-color 200ms var(--ease), transform 160ms var(--ease); }
+    .opt:active { transform: scale(0.98); }
+    .opt .main { font: 700 20px/1.2 var(--sans-jp); }
+    .opt .sub { font: 11.5px/1.35 var(--mono); color: var(--muted); }
+    .opt[aria-pressed="true"] { border-color: #5b8def; background: #eef3fe; }
+    .opt.correct { border-color: var(--ok); background: var(--ok-soft); }
+    .opt.wrong { border-color: var(--accent); background: var(--accent-soft); }
+    .opt[disabled] { cursor: default; }
+    .q-spacer { flex: 1; }
+    .feedback { border-radius: 20px 20px 0 0; margin: 0 -22px; padding: 16px 22px 18px; background: transparent; transition: background-color 200ms var(--ease); }
+    .feedback .msg { min-height: 40px; margin-bottom: 12px; opacity: 0; transform: translateY(6px); transition: opacity 200ms var(--ease), transform 200ms var(--ease); }
+    .feedback .msg b { display: block; font: 700 16px/1.2 var(--sans); }
+    .feedback .msg span { font-size: 12.5px; }
+    .feedback.ok { background: var(--ok-soft); color: #1d5c3a; }
+    .feedback.bad { background: var(--accent-soft); color: #8f1a27; }
+    .feedback.ok .msg, .feedback.bad .msg { opacity: 1; transform: none; }
+    .feedback.ok .btn-primary { background: var(--ok); box-shadow: 0 4px 0 #1f6640; }
+    .result { display: none; flex: 1; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 10px; padding-bottom: 20px; }
+    .result .medal { width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffe49a, var(--gold)); display: grid; place-items: center; font: 900 46px/1 var(--serif-jp); color: #7a4b00; box-shadow: 0 10px 30px rgba(226,167,46,0.4); }
+    .result h3 { font: 700 24px/1.2 var(--sans); margin: 8px 0 0; letter-spacing: -0.02em; }
+    .result p { margin: 0; color: var(--muted); max-width: 26ch; }
+    .result .stats { display: flex; gap: 10px; margin: 10px 0 16px; }
+    .result .stats div { padding: 10px 14px; border-radius: 14px; background: var(--paper-2); border: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+    .result .stats b { display: block; font: 700 18px/1.2 var(--sans); color: var(--ink); }
+    .q-body { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+    .quiz.finished .q-body { display: none; }
+    .quiz.finished .result { display: flex; }
+
+    /* Phone 4 — kana explorer */
+    .kana-h { display: flex; justify-content: space-between; align-items: baseline; margin-top: 4px; }
+    .kana-h h2 { font: 700 22px/1.2 var(--sans); letter-spacing: -0.02em; margin: 0; }
+    .seg { display: flex; padding: 3px; background: var(--paper-2); border-radius: 999px; border: 1px solid var(--line); }
+    .seg button { border: 0; background: none; padding: 6px 10px; border-radius: 999px; font: 500 12px/1 var(--sans-jp); color: var(--muted); }
+    .seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+    .card { margin: 14px 0 12px; border-radius: 22px; padding: 16px; background: var(--ink); color: #fbf6ec; display: grid; grid-template-columns: 96px 1fr; gap: 14px; position: relative; overflow: hidden; }
+    .card::after { content: ''; position: absolute; right: -40px; top: -40px; width: 130px; height: 130px; border-radius: 50%; background: rgba(214,40,57,0.25); }
+    .card .big { font: 700 76px/96px var(--serif-jp); text-align: center; background: rgba(251,246,236,0.06); border-radius: 16px; height: 96px; }
+    .card .info { position: relative; z-index: 1; min-width: 0; }
+    .card .rd { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+    .card .rd b { font: 700 22px/1.1 var(--sans); }
+    .card .rd span { font: 12px/1 var(--mono); color: rgba(251,246,236,0.6); }
+    .card .tip { font-size: 12.5px; line-height: 1.4; color: rgba(251,246,236,0.78); margin: 6px 0 0; }
+    .card .words { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; position: relative; z-index: 1; }
+    .card .words div { background: rgba(251,246,236,0.07); border-radius: 12px; padding: 8px 10px; font-size: 11.5px; color: rgba(251,246,236,0.65); }
+    .card .words b { display: block; font: 600 16px/1.3 var(--sans-jp); color: #fbf6ec; }
+    .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .cell { position: relative; border: 1px solid var(--line); background: var(--paper); border-radius: 12px; padding: 6px 0 5px; display: flex; flex-direction: column; align-items: center; gap: 2px; transition: background-color 200ms var(--ease), border-color 200ms var(--ease); }
+    .cell .g { font: 500 21px/1.15 var(--sans-jp); }
+    .cell .r { font: 10.5px/1 var(--mono); color: var(--muted); }
+    .cell.diff::after { content: ''; position: absolute; top: 5px; right: 5px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .cell[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+    .legend { margin-top: 10px; font-size: 11.5px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .legend i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="stage-bar" data-od-id="stage-bar">
+    <span>Hi-fi prototype · iPhone · 4 ekrane</span>
+    <span class="wordmark"><b>Ura</b><span>橋</span></span>
+  </header>
+
+  <main class="phones" data-od-id="stage">
+
+    <!-- Phone 1 — cover -->
+    <section class="phone" data-od-id="phone-cover" aria-label="Ekrani hyrës">
+      <div class="screen cover">
+        <div class="status"><span>9:41</span><span class="right">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor" opacity="0.5"/><rect x="2" y="2" width="16" height="8" rx="1.5" fill="currentColor"/><rect x="23" y="4" width="1.5" height="4" rx="0.75" fill="currentColor" opacity="0.5"/></svg>
+        </span></div>
+        <div class="content" data-od-id="cover-body">
+          <span class="eyebrow"><i></i>Për shqipfolës</span>
+          <div class="hero-glyph" data-od-id="cover-hero">
+            <div class="sun" aria-hidden="true">橋</div>
+            <div class="read">hashi<b>„urë“</b></div>
+          </div>
+          <h1>Japonishtja, e shpjeguar <em>në shqip.</em></h1>
+          <p>Hiragana, katakana dhe fjalët e para — me shqiptim të shkruar ashtu si e lexon ti.</p>
+          <div class="spacer"></div>
+          <div class="bridge" data-od-id="cover-bridge" aria-label="Shembuj shqiptimi">
+            <span class="pair"><b>ち</b> chi → çi</span>
+            <span class="pair"><b>つ</b> tsu → cu</span>
+            <span class="pair"><b>じ</b> ji → xhi</span>
+          </div>
+          <button class="btn btn-primary" type="button">Fillo falas</button>
+          <button class="btn btn-ghost" type="button">Di pak japonisht tashmë</button>
+        </div>
+      </div>
+      <span class="phone-label">01 · Hyrja</span>
+    </section>
+
+    <!-- Phone 2 — today / path -->
+    <section class="phone" data-od-id="phone-today" aria-label="Mësimi i sotëm">
+      <div class="screen">
+        <div class="status"><span>9:41</span><span class="right">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor" opacity="0.5"/><rect x="2" y="2" width="16" height="8" rx="1.5" fill="currentColor"/><rect x="23" y="4" width="1.5" height="4" rx="0.75" fill="currentColor" opacity="0.5"/></svg>
+        </span></div>
+        <div class="content" data-od-id="today-body">
+          <div class="greet" data-od-id="today-greeting">
+            <div><small>おはよう · ohajoo</small><h2>Mirëmëngjes, Arta</h2></div>
+            <span class="streak" title="Ditë rresht">
+              <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true"><path d="M7 0c1 3 5 5 5 9.5A5 5 0 0 1 2 9.5C2 7 3.5 6 4 4c1 1.5 1 3 2 3.5C6.5 5 6 2.5 7 0Z"/></svg>12
+            </span>
+          </div>
+
+          <div class="goal" data-od-id="today-goal">
+            <svg class="ring" viewBox="0 0 58 58" aria-hidden="true">
+              <circle cx="29" cy="29" r="24" fill="none" stroke="#ece5d8" stroke-width="7"/>
+              <circle cx="29" cy="29" r="24" fill="none" stroke="#d62839" stroke-width="7" stroke-linecap="round" stroke-dasharray="113 151" transform="rotate(-90 29 29)"/>
+              <text x="29" y="33" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#1c1917">75%</text>
+            </svg>
+            <div>
+              <b>Qëllimi ditor: 15 / 20 XP</b>
+              <span>Edhe një mësim dhe e ke mbyllur.</span>
+              <div class="week" aria-label="Kjo javë">
+                <i class="on">H</i><i class="on">M</i><i class="on">M</i><i class="on">E</i><i class="on">P</i><i>S</i><i>D</i>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-h">Rruga jote · Niveli 1</div>
+          <ol class="path" data-od-id="today-path">
+            <li class="unit done"><span class="node">あ</span><span class="t"><b>Hiragana 1</b><span>あ い う え お · 5 / 5 mësime</span></span></li>
+            <li class="unit done"><span class="node">か</span><span class="t"><b>Hiragana 2</b><span>か さ た · 5 / 5 mësime</span></span></li>
+            <li class="unit current"><span class="node">挨</span><span class="t"><b>Përshëndetjet</b><span>こんにちは, ありがとう · 2 / 4</span></span><button class="go" type="button">Vazhdo</button></li>
+            <li class="unit locked"><span class="node">一</span><span class="t"><b>Numrat 1–10</b><span>いち, に, さん…</span></span></li>
+            <li class="unit locked"><span class="node">ア</span><span class="t"><b>Katakana</b><span>Fjalët e huaja: コーヒー, テレビ</span></span></li>
+          </ol>
+        </div>
+        <nav class="tabs" aria-label="Navigimi">
+          <button class="tab" type="button" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Sot</button>
+          <button class="tab" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>Kana</button>
+          <button class="tab" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/><path d="M8 7h7"/></svg>Fjalori</button>
+          <button class="tab" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Profili</button>
+        </nav>
+      </div>
+      <span class="phone-label">02 · Sot</span>
+    </section>
+
+    <!-- Phone 3 — quiz -->
+    <section class="phone" data-od-id="phone-quiz" aria-label="Kuiz">
+      <div class="screen">
+        <div class="status"><span>9:41</span><span class="right">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor" opacity="0.5"/><rect x="2" y="2" width="16" height="8" rx="1.5" fill="currentColor"/><rect x="23" y="4" width="1.5" height="4" rx="0.75" fill="currentColor" opacity="0.5"/></svg>
+        </span></div>
+        <div class="content quiz" id="quiz" data-od-id="quiz-body">
+          <div class="quiz-top">
+            <button class="x" type="button" aria-label="Mbyll"><svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m1 1 10 10M11 1 1 11"/></svg></button>
+            <div class="bar" role="progressbar" aria-label="Përparimi" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><i id="quiz-bar"></i></div>
+            <span class="hearts" aria-label="Zemra"><svg width="15" height="14" viewBox="0 0 15 14" fill="currentColor" aria-hidden="true"><path d="M7.5 14S0 9.5 0 4.2A4 4 0 0 1 7.5 2a4 4 0 0 1 7.5 2.2C15 9.5 7.5 14 7.5 14Z"/></svg><span id="quiz-hearts">5</span></span>
+          </div>
+
+          <div class="q-body">
+            <div class="q-count" id="quiz-count">Pyetja 1 nga 5</div>
+            <h3 class="q-prompt" id="quiz-prompt" data-od-id="quiz-prompt"></h3>
+            <div class="options" id="quiz-options" data-od-id="quiz-options"></div>
+            <div class="q-spacer"></div>
+            <div class="feedback" id="quiz-feedback" data-od-id="quiz-feedback">
+              <div class="msg" aria-live="polite"><b id="quiz-msg-title"></b><span id="quiz-msg-body"></span></div>
+              <button class="btn btn-primary" id="quiz-action" type="button" disabled>Kontrollo</button>
+            </div>
+          </div>
+
+          <div class="result" data-od-id="quiz-result" aria-live="polite">
+            <div class="medal" aria-hidden="true">良</div>
+            <h3>Mësimi u mbyll!</h3>
+            <p>Shumë mirë — „Përshëndetjet“ tani janë 3 / 4.</p>
+            <div class="stats">
+              <div><b id="quiz-xp">+0</b>XP</div>
+              <div><b id="quiz-acc">0%</b>saktësi</div>
+              <div><b>13</b>ditë rresht</div>
+            </div>
+            <button class="btn btn-primary" id="quiz-restart" type="button">Përsërit mësimin</button>
+          </div>
+        </div>
+      </div>
+      <span class="phone-label">03 · Kuizi</span>
+    </section>
+
+    <!-- Phone 4 — kana explorer -->
+    <section class="phone" data-od-id="phone-kana" aria-label="Alfabeti">
+      <div class="screen">
+        <div class="status"><span>9:41</span><span class="right">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor" opacity="0.5"/><rect x="2" y="2" width="16" height="8" rx="1.5" fill="currentColor"/><rect x="23" y="4" width="1.5" height="4" rx="0.75" fill="currentColor" opacity="0.5"/></svg>
+        </span></div>
+        <div class="content" data-od-id="kana-body">
+          <div class="kana-h">
+            <h2>Kana</h2>
+            <div class="seg" role="group" aria-label="Shkrimi">
+              <button type="button" id="seg-hira" aria-pressed="true">ひらがな</button>
+              <button type="button" id="seg-kata" aria-pressed="false">カタカナ</button>
+            </div>
+          </div>
+
+          <div class="card" data-od-id="kana-card" aria-live="polite">
+            <div class="big" id="kana-big">し</div>
+            <div class="info">
+              <div class="rd"><b id="kana-sq">shi</b><span id="kana-romaji">romaji: shi</span></div>
+              <p class="tip" id="kana-tip">Si një grep peshkimi. Lexohet njësoj si „shi“ në shqip.</p>
+            </div>
+            <div class="words" id="kana-words"></div>
+          </div>
+
+          <div class="grid" id="kana-grid" data-od-id="kana-grid"></div>
+          <div class="legend"><i></i>Shkruhet ndryshe në shqip se në romaji</div>
+        </div>
+        <nav class="tabs" aria-label="Navigimi">
+          <button class="tab" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Sot</button>
+          <button class="tab" type="button" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>Kana</button>
+          <button class="tab" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/><path d="M8 7h7"/></svg>Fjalori</button>
+          <button class="tab" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Profili</button>
+        </nav>
+      </div>
+      <span class="phone-label">04 · Kana</span>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    // ---------- Quiz ----------
+    var QUESTIONS = [
+      { prompt: 'Si thuhet <span class="hl">„Faleminderit“</span> në japonisht?', answer: 0,
+        options: [['ありがとう', 'arigatō · arigatoo'], ['すみません', 'sumimasen'], ['こんにちは', 'konnichiwa · konniçiua'], ['さようなら', 'sayōnara · sajoonara']],
+        why: 'ありがとう (arigatoo) = faleminderit. Më formale: ありがとうございます.' },
+      { prompt: 'Si thuhet <span class="hl">„Mirëmëngjes“</span>?', answer: 2,
+        options: [['こんばんは', 'konbanwa · konbanua'], ['おやすみ', 'oyasumi · ojasumi'], ['おはよう', 'ohayō · ohajoo'], ['はい', 'hai']],
+        why: 'おはよう (ohajoo) = mirëmëngjes. こんばんは = mirëmbrëma.' },
+      { prompt: 'Çfarë do të thotë <span class="jp">ねこ</span>?', answer: 1,
+        options: [['qen', 'いぬ · inu'], ['mace', 'ねこ · neko'], ['ujë', 'みず · mizu'], ['libër', 'ほん · hon']],
+        why: 'ねこ (neko) = mace. いぬ (inu) = qen.' },
+      { prompt: 'Si lexohet shkronja <span class="jp">ち</span>?', answer: 1,
+        options: [['ci', 'si „ci“ në „cicërimë“'], ['çi', 'romaji: chi'], ['shi', 'romaji: shi'], ['ki', 'romaji: ki']],
+        why: 'ち shkruhet „chi“ në romaji, por shqiptohet si „çi“ — si te „çaj“.' },
+      { prompt: 'Si i kërkon falje dikujt, ose e thërret kamarierin?', answer: 3,
+        options: [['いいえ', 'iie · jo'], ['さようなら', 'sajoonara'], ['おはよう', 'ohajoo'], ['すみません', 'sumimasen']],
+        why: 'すみません (sumimasen) = më falni; përdoret edhe për të tërhequr vëmendjen.' }
+    ];
+    var quiz = document.getElementById('quiz');
+    var elPrompt = document.getElementById('quiz-prompt');
+    var elOptions = document.getElementById('quiz-options');
+    var elCount = document.getElementById('quiz-count');
+    var elBar = document.getElementById('quiz-bar');
+    var elProgress = elBar.parentNode;
+    var elHearts = document.getElementById('quiz-hearts');
+    var elFeedback = document.getElementById('quiz-feedback');
+    var elTitle = document.getElementById('quiz-msg-title');
+    var elBody = document.getElementById('quiz-msg-body');
+    var elAction = document.getElementById('quiz-action');
+    var index = 0, selected = -1, checked = false, correctCount = 0, hearts = 5;
+
+    function render() {
+      var q = QUESTIONS[index];
+      selected = -1; checked = false;
+      elCount.textContent = 'Pyetja ' + (index + 1) + ' nga ' + QUESTIONS.length;
+      elPrompt.innerHTML = q.prompt;
+      elOptions.innerHTML = '';
+      q.options.forEach(function (opt, i) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'opt'; b.setAttribute('aria-pressed', 'false');
+        b.innerHTML = '<span class="main"></span><span class="sub"></span>';
+        b.firstChild.textContent = opt[0]; b.lastChild.textContent = opt[1];
+        b.addEventListener('click', function () {
+          if (checked) return;
+          selected = i;
+          Array.prototype.forEach.call(elOptions.children, function (c, j) { c.setAttribute('aria-pressed', String(j === i)); });
+          elAction.disabled = false;
+        });
+        elOptions.appendChild(b);
+      });
+      elFeedback.className = 'feedback';
+      elTitle.textContent = ''; elBody.textContent = '';
+      elAction.textContent = 'Kontrollo'; elAction.disabled = true;
+    }
+
+    function setProgress(n) {
+      elBar.style.width = (n / QUESTIONS.length * 100) + '%';
+      elProgress.setAttribute('aria-valuenow', String(n));
+    }
+
+    function check() {
+      var q = QUESTIONS[index];
+      var ok = selected === q.answer;
+      checked = true;
+      if (ok) correctCount++; else hearts = Math.max(0, hearts - 1);
+      elHearts.textContent = String(hearts);
+      Array.prototype.forEach.call(elOptions.children, function (c, j) {
+        c.disabled = true;
+        if (j === q.answer) c.classList.add('correct');
+        else if (j === selected) c.classList.add('wrong');
+      });
+      elFeedback.className = 'feedback ' + (ok ? 'ok' : 'bad');
+      elTitle.textContent = ok ? 'Saktë! すごい!' : 'Jo tamam.';
+      elBody.textContent = q.why;
+      elAction.textContent = index === QUESTIONS.length - 1 ? 'Përfundo' : 'Vazhdo';
+      setProgress(index + 1);
+    }
+
+    function finish() {
+      document.getElementById('quiz-xp').textContent = '+' + (correctCount * 2 + 5);
+      document.getElementById('quiz-acc').textContent = Math.round(correctCount / QUESTIONS.length * 100) + '%';
+      quiz.classList.add('finished');
+    }
+
+    elAction.addEventListener('click', function () {
+      if (!checked) { if (selected >= 0) check(); return; }
+      if (index < QUESTIONS.length - 1) { index++; render(); } else { finish(); }
+    });
+    document.getElementById('quiz-restart').addEventListener('click', function () {
+      index = 0; correctCount = 0; hearts = 5; elHearts.textContent = '5';
+      setProgress(0); quiz.classList.remove('finished'); render();
+    });
+    render();
+
+    // ---------- Kana explorer ----------
+    // [hiragana, katakana, romaji, albanian respelling, tip, [word, reading, meaning] x2]
+    var KANA = [
+      ['あ','ア','a','a','Hapet si „a“ te „arë“.',[['あめ','ame','shi (reshje)'],['あさ','asa','mëngjes']]],
+      ['い','イ','i','i','Dy vija të vogla — si „i“ te „ishull“.',[['いぬ','inu','qen'],['いえ','ie','shtëpi']]],
+      ['う','ウ','u','u','„u“ pa i rrumbullakosur buzët.',[['うみ','umi','det'],['うた','uta','këngë']]],
+      ['え','エ','e','e','Si „e“ te „emër“.',[['えき','eki','stacion'],['えん','en','jen']]],
+      ['お','オ','o','o','Si „o“ te „oborr“.',[['おちゃ','oça','çaj jeshil'],['おと','oto','tingull']]],
+      ['か','カ','ka','ka','Si „ka“ në shqip.',[['かさ','kasa','çadër'],['かお','kao','fytyrë']]],
+      ['き','キ','ki','ki','Si „ki“ — jo „qi“.',[['きた','kita','veri'],['き','ki','pemë']]],
+      ['く','ク','ku','ku','Si sqep zogu: „ku“.',[['くち','kuçi','gojë'],['くも','kumo','re']]],
+      ['け','ケ','ke','ke','Si „ke“ te „ke ardhur“.',[['けさ','kesa','sot në mëngjes'],['いけ','ike','pellg']]],
+      ['こ','コ','ko','ko','Dy vija paralele: „ko“.',[['ここ','koko','këtu'],['こえ','koe','zë']]],
+      ['さ','サ','sa','sa','Si „sa“ te „sa vjeç“.',[['さけ','sake','verë orizi'],['さかな','sakana','peshk']]],
+      ['し','シ','shi','shi','Si një grep peshkimi. Lexohet njësoj si „shi“ në shqip.',[['しお','shio','kripë'],['すし','sushi','sushi']]],
+      ['す','ス','su','su','„u“ del e dobët: shpesh tingëllon „s“.',[['すし','sushi','sushi'],['いす','isu','karrige']]],
+      ['せ','セ','se','se','Si „se“ te „se di“.',[['せかい','sekai','botë'],['あせ','ase','djersë']]],
+      ['そ','ソ','so','so','Si „so“ te „sot“.',[['そら','sora','qiell'],['うそ','uso','gënjeshtër']]],
+      ['た','タ','ta','ta','Si „ta“ në shqip.',[['たこ','tako','oktapod'],['うた','uta','këngë']]],
+      ['ち','チ','chi','çi','Romaji „chi“, por në shqip shkruhet „çi“ — si te „çaj“.',[['ちず','çizu','hartë'],['くち','kuçi','gojë']]],
+      ['つ','ツ','tsu','cu','Romaji „tsu“ = shqip „cu“ — si te „cung“.',[['つき','cuki','hënë'],['くつ','kucu','këpucë']]],
+      ['て','テ','te','te','Si „te“ te „tetë“.',[['て','te','dorë'],['てら','tera','tempull']]],
+      ['と','ト','to','to','Si „to“ te „top“.',[['とり','tori','zog'],['おと','oto','tingull']]]
+    ];
+    var script = 0; // 0 hiragana, 1 katakana
+    var current = 11;
+    var grid = document.getElementById('kana-grid');
+
+    function showCard(i) {
+      var k = KANA[i];
+      current = i;
+      document.getElementById('kana-big').textContent = k[script];
+      document.getElementById('kana-sq').textContent = k[3];
+      document.getElementById('kana-romaji').textContent = 'romaji: ' + k[2];
+      document.getElementById('kana-tip').textContent = k[4];
+      var words = document.getElementById('kana-words');
+      words.innerHTML = '';
+      k[5].forEach(function (w) {
+        var d = document.createElement('div');
+        var b = document.createElement('b');
+        b.textContent = w[0];
+        d.appendChild(b);
+        d.appendChild(document.createTextNode(w[1] + ' · ' + w[2]));
+        words.appendChild(d);
+      });
+      Array.prototype.forEach.call(grid.children, function (c, j) { c.setAttribute('aria-pressed', String(j === i)); });
+    }
+
+    function buildGrid() {
+      grid.innerHTML = '';
+      KANA.forEach(function (k, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'cell' + (k[2] !== k[3] ? ' diff' : '');
+        b.setAttribute('aria-label', k[script] + ', ' + k[3]);
+        b.innerHTML = '<span class="g"></span><span class="r"></span>';
+        b.firstChild.textContent = k[script];
+        b.lastChild.textContent = k[3];
+        b.addEventListener('click', function () { showCard(i); });
+        grid.appendChild(b);
+      });
+      showCard(current);
+    }
+
+    function setScript(s) {
+      script = s;
+      document.getElementById('seg-hira').setAttribute('aria-pressed', String(s === 0));
+      document.getElementById('seg-kata').setAttribute('aria-pressed', String(s === 1));
+      buildGrid();
+    }
+    document.getElementById('seg-hira').addEventListener('click', function () { setScript(0); });
+    document.getElementById('seg-kata').addEventListener('click', function () { setScript(1); });
+    buildGrid();
+  })();
+  </script>
+</body>
+</html>
